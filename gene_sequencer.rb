@@ -52,7 +52,9 @@ class GeneSequencer
   def protein_matcher(genes)
     codon_hash = CodonParser.new.codon_hash
     proteins = genes.collect do |gene|
-      codon_hash[gene]
+      while codon_hash[gene] != 'Stop codon'
+        codon_hash[gene]
+      end
     end
   end
 
