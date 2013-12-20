@@ -16,15 +16,27 @@ class GeneSequencer
   end
 
   def sequence_parser
-    genes = []
-    genes.concat(tripler(@array))
-    genes.concat(tripler(plus_one(@array)))
-    genes.concat(tripler(plus_two(@array)))
-    genes.concat(tripler(@reverse_array))
-    genes.concat(tripler(plus_one(@reverse_array)))
-    genes.concat(tripler(plus_two(@reverse_array)))
-    genes
+    zero_parser(@array)
   end
+
+  def zero_parser(array)
+    genes = tripler(array)
+    proteins = protein_matcher(genes)
+    [genes, proteins]
+  end
+
+  def plus_one_parser(array)
+    genes = tripler(array[1..-1])
+    proteins = protein_matcher(genes)
+    [genes, proteins]
+  end
+
+  def plus_two_parser(array)
+    genes = tripler(array[2..-1])
+    proteins = protein_matcher(genes)
+    [genes, proteins]
+  end
+
 
   def tripler(array)
     n=0
@@ -36,22 +48,15 @@ class GeneSequencer
     triples
   end
 
-  def plus_one(array)
-    shifted_array = array[1..-1]
-  end
 
-  def plus_two(array)
-    double_shifted_array = array[2..-1]
-  end
-
-  def protein_matcher
+  def protein_matcher(genes)
     codon_hash = CodonParser.new.codon_hash
-    proteins = sequence_parser.collect do |gene|
+    proteins = genes.collect do |gene|
       codon_hash[gene]
     end
   end
 
 end
 
-puts GeneSequencer.new("ttctaatgc").protein_matcher
+puts GeneSequencer.new("ttctaatgc").sequence_parser
 
