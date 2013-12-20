@@ -1,11 +1,12 @@
 require 'pry'
+require_relative './codon_parser.rb'
 
 class GeneSequencer
 
   attr_accessor :parser
 
   def initialize(sequence)
-    @array = sequence.split("")
+    @array = sequence.upcase.split("")
     @reverse_array = @array.reverse
     if @array.length > 4
       parser
@@ -14,7 +15,7 @@ class GeneSequencer
     end
   end
 
-  def parser
+  def sequence_parser
     genes = []
     genes.concat(tripler(@array))
     genes.concat(tripler(plus_one(@array)))
@@ -24,7 +25,6 @@ class GeneSequencer
     genes.concat(tripler(plus_two(@reverse_array)))
     genes
   end
-
 
   def tripler(array)
     n=0
@@ -36,7 +36,6 @@ class GeneSequencer
     triples
   end
 
-
   def plus_one(array)
     shifted_array = array[1..-1]
   end
@@ -45,7 +44,14 @@ class GeneSequencer
     double_shifted_array = array[2..-1]
   end
 
+  def protein_matcher
+    codon_hash = CodonParser.new.codon_hash
+    proteins = sequence_parser.collect do |gene|
+      codon_hash[gene]
+    end
+  end
+
 end
 
-puts GeneSequencer.new("ttctaatgc").parser
+puts GeneSequencer.new("ttctaatgc").protein_matcher
 
