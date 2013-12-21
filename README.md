@@ -4,5 +4,5 @@
 
 `codon_parser.rb` loads the values from `codon.csv` into a hash.
 
-`gene_sequencer.rb` splits the string of nucleotides into the potential sets of three and then matches them with the respective amino acids from the amino_acid_hash.
+`gene_sequencer.rb` splits the string of nucleotides into the potential sets of codons and then matches them with the respective amino acids from the amino_acid_hash.
 
