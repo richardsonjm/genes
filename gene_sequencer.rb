@@ -8,7 +8,7 @@ class GeneSequencer
 
   def initialize(sequence)
     @array = sequence.upcase.split("")
-    @protein_hash = {}
+    @amino_acid_hash = {}
     if @array.length > 2
       sequencer
       printer
@@ -28,9 +28,9 @@ class GeneSequencer
     while i < 3 && n < array.length
       genes = tripler(array[i..-1])
       if dir==:forward
-        @protein_hash[NUM_ARRAY[i].to_sym] = protein_matcher(genes)
+        @amino_acid_hash[NUM_ARRAY[i].to_sym] = protein_matcher(genes)
       else
-        @protein_hash[("r_"+ NUM_ARRAY[i]).to_sym] = protein_matcher(genes)
+        @amino_acid_hash[("r_"+ NUM_ARRAY[i]).to_sym] = protein_matcher(genes)
       end
       i += 1
       n += 3
@@ -59,7 +59,7 @@ class GeneSequencer
 
   def printer
     puts "-----"
-    @protein_hash.each do |key, value|
+    @amino_acid_hash.each do |key, value|
       if value != []
         puts "#{key}:"
         puts value
