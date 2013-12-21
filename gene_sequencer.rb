@@ -1,4 +1,5 @@
 require 'pry'
+require 'numbers_and_words'
 require_relative './codon_parser.rb'
 
 class GeneSequencer
@@ -7,36 +8,32 @@ class GeneSequencer
 
   def initialize(sequence)
     @array = sequence.upcase.split("")
-    @reverse_array = @array.reverse
-    if @array.length > 4
-      parser
+    @protein_hash = {}
+    if @array.length > 2
+      sequencer
+      puts @protein_hash
     else
-      @array + @reverse_array
+      puts "codon to small to parse"
     end
   end
 
-  def sequence_parser
-    zero_parser(@array)
+  def sequencer
+    parser(@array)
+    parser(@array.reverse, :reverse)
   end
 
-  def zero_parser(array)
-    genes = tripler(array)
-    proteins = protein_matcher(genes)
-    [genes, proteins]
+  def parser(array, dir=:forward )
+    i = 0
+    while i < 3
+      genes = tripler(array[i..-1])
+      if dir==:forward
+        @protein_hash[i.to_words.to_sym] = protein_matcher(genes)
+      else
+        @protein_hash[("r_"+ i.to_words).to_sym] = protein_matcher(genes)
+      end
+      i += 1
+    end
   end
-
-  def plus_one_parser(array)
-    genes = tripler(array[1..-1])
-    proteins = protein_matcher(genes)
-    [genes, proteins]
-  end
-
-  def plus_two_parser(array)
-    genes = tripler(array[2..-1])
-    proteins = protein_matcher(genes)
-    [genes, proteins]
-  end
-
 
   def tripler(array)
     n=0
@@ -48,17 +45,17 @@ class GeneSequencer
     triples
   end
 
-
   def protein_matcher(genes)
     codon_hash = CodonParser.new.codon_hash
-    proteins = genes.collect do |gene|
-      while codon_hash[gene] != 'Stop codon'
-        codon_hash[gene]
-      end
+    proteins = []
+    genes.each do |gene|
+      break if codon_hash[gene] == "Stop codons"
+      proteins << codon_hash[gene]
     end
+    proteins
   end
 
 end
 
-puts GeneSequencer.new("ttctaatgc").sequence_parser
+puts GeneSequencer.new("ttc").sequencer
 
