@@ -1,4 +1,4 @@
-require 'csv'
+require_relative './environment.rb'
 
 class CodonParser
 
