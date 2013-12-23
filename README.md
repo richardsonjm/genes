@@ -8,7 +8,7 @@ To use application, clone repository
 cd into `genes` directory and run `ruby cli.rb` from the command line.
 
 
-#######Application files
+######Application files
 
 `codon.csv` represents a table of amino acids and their respective codons which originated from [here](http://www.cbs.dtu.dk/courses/27619/codon.html).
 
