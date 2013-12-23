@@ -28,7 +28,7 @@ class SequencerCLI
   end
 
   def sequence
-    puts "please enter list if nucleotides to be sequenced"
+    puts "please enter list if nucleotides to sequence"
     sequence = gets.chomp.strip.downcase
     @array = sequence.upcase.split("")
     @amino_acid_hash = {}
